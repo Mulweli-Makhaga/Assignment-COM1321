@@ -10,7 +10,7 @@ package electrohub;
  * 26034761
  */
 
-public class Electrohub {
+public class Main {
 
     public static void main(String[] args) {
         Products product = new Products();
