@@ -4,15 +4,14 @@
  */
 package electrohub;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author Makhaga Mulweli
  * 26034761
  */
-
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Products {
 
     Scanner sc = new Scanner(System.in);
@@ -21,20 +20,28 @@ public class Products {
 
     public void DisplayMenu() {
 
+        System.out.println("BRIGHT FUTURE TECHNOLOGIES APPLICATION");
+        System.out.println("************************************");
+        System.out.print("Enter (1) to launch menu or any other key to exit: ");
+
+        String launch = sc.nextLine();
+
+        if (!launch.equals("1")) {
+            ExitApplication();
+            return;
+        }
+
         int option;
 
         do {
 
-            System.out.println("************************************");
-            System.out.println("ELECTRO HUB");
-            System.out.println("************************************");
-
-            System.out.println("1. Capture Product");
-            System.out.println("2. Search Product");
-            System.out.println("3. Update Product");
-            System.out.println("4. Delete Product");
-            System.out.println("5. Print Report");
-            System.out.println("6. Exit");
+            System.out.println("\nPlease select one of the following menu items:");
+            System.out.println("(1) Capture a new product.");
+            System.out.println("(2) Search for a product.");
+            System.out.println("(3) Update a product.");
+            System.out.println("(4) Delete a product.");
+            System.out.println("(5) Print report.");
+            System.out.println("(6) Exit Application.");
 
             System.out.print("Choose an option: ");
 
@@ -83,25 +90,26 @@ public class Products {
 
     public void CaptureProduct() {
 
-        System.out.println("\nCAPTURE PRODUCT");
+        System.out.println("\nCAPTURE A NEW PRODUCT");
+        System.out.println("****************************");
 
-        System.out.print("Enter Product Code: ");
+        System.out.print("Enter the product code: ");
         String productCode = sc.nextLine();
 
-        System.out.print("Enter Product Name: ");
+        System.out.print("Enter the product name: ");
         String productName = sc.nextLine();
 
         int choice;
 
         do {
 
-            System.out.println("\nSelect Product Category");
-            System.out.println("1. Desktop Computer");
-            System.out.println("2. Laptop");
-            System.out.println("3. Tablet");
-            System.out.println("4. Printer");
-            System.out.println("5. Gaming Console");
-            System.out.print("Choice: ");
+            System.out.println("Select the product category:");
+            System.out.println("Desktop Computer - 1");
+            System.out.println("Laptop - 2");
+            System.out.println("Tablet - 3");
+            System.out.println("Printer - 4");
+            System.out.println("Gaming Console - 5");
+            System.out.print("Product Category >> ");
 
             choice = readInt();
 
@@ -136,10 +144,7 @@ public class Products {
                 break;
         }
 
-        System.out.println("\nWarranty");
-        System.out.println("1. 6 Months");
-        System.out.println("2. 2 Years");
-        System.out.print("Choice: ");
+        System.out.print("Indicate the product warranty. Enter (1) for 6 months or any other key for 2 years. ");
 
         int warrantyChoice = readInt();
 
@@ -147,7 +152,7 @@ public class Products {
 
         double price;
         do {
-            System.out.print("Enter Product Price: ");
+            System.out.print("Enter the price for " + productName + " >> ");
             price = readDouble();
 
             if (price < 0) {
@@ -157,7 +162,7 @@ public class Products {
 
         int stock;
         do {
-            System.out.print("Enter Stock Level: ");
+            System.out.print("Enter the stock level for " + productName + " >> ");
             stock = readInt();
 
             if (stock < 0) {
@@ -165,48 +170,65 @@ public class Products {
             }
         } while (stock < 0);
 
-        System.out.print("Enter Supplier: ");
+        System.out.print("Enter the supplier for " + productName + " >> ");
         String supplier = sc.nextLine();
 
-        products.add(new ReportData(productCode, productName, category, warranty, price, stock, supplier));
+        SaveProduct(productCode, productName, category, warranty, price, stock, supplier);
 
-        System.out.println("\nProduct successfully captured!\n");
+        System.out.println("Product details has been saved successfully!!!");
+        System.out.print("Enter (1) to launch menu or any other key to exit: ");
+
+    }
+
+    public void SaveProduct(String productCode, String productName, String category,
+            String warranty, double price, int stock, String supplier) {
+
+        products.add(new ReportData(productCode, productName, category, warranty, price, stock, supplier));
 
     }
 
     public void SearchProduct() {
 
-        System.out.print("Enter Product Code to Search: ");
+        System.out.print("Please enter the product code to search: ");
         String search = sc.nextLine();
 
         ReportData found = findProduct(search);
 
         if (found != null) {
 
-            System.out.println("\nPRODUCT FOUND");
-            printProduct(found);
+            System.out.println("****************************************************************");
+            System.out.println("PRODUCT SEARCH RESULTS");
+            System.out.println("****************************************************************");
+            System.out.println("PRODUCT CODE:\t\t" + found.getProductCode());
+            System.out.println("PRODUCT NAME:\t\t" + found.getProductName());
+            System.out.println("PRODUCT WARRANTY:\t" + found.getWarranty());
+            System.out.println("PRODUCT CATEGORY:\t" + found.getCategory());
+            System.out.printf("PRODUCT PRICE:\t\tR %.0f%n", found.getPrice());
+            System.out.println("PRODUCT STOCK LEVELS:\t" + found.getStock());
+            System.out.println("PRODUCT SUPPLIER:\t" + found.getSupplier());
+            System.out.println("****************************************************************");
 
         } else {
-            System.out.println("Product not found.");
+            System.out.println("The product cannot be located. Invalid Product");
         }
+
+        System.out.print("Enter (1) to launch menu or any other key to exit: ");
 
     }
 
     public void UpdateProduct() {
 
-        System.out.print("Enter Product Code to Update: ");
+        System.out.print("Please enter the product code to update: ");
         String search = sc.nextLine();
 
         ReportData found = findProduct(search);
 
         if (found != null) {
 
-            System.out.println("Product Found!");
-
-            System.out.print("Update Warranty? (Y/N): ");
+            System.out.print("Update the warranty? (y) Yes, (n) No ");
             String answer = sc.nextLine();
 
-            if (answer.equalsIgnoreCase("Y")) {
+            if (answer.equalsIgnoreCase("y")) {
 
                 System.out.println("1. 6 Months");
                 System.out.println("2. 2 Years");
@@ -217,14 +239,14 @@ public class Products {
 
             }
 
-            System.out.print("Update Price? (Y/N): ");
+            System.out.print("Update the product price? (y) Yes, (n) No ");
             answer = sc.nextLine();
 
-            if (answer.equalsIgnoreCase("Y")) {
+            if (answer.equalsIgnoreCase("y")) {
 
                 double newPrice;
                 do {
-                    System.out.print("Enter New Price: ");
+                    System.out.print("Enter the new price for " + found.getProductName() + " >> ");
                     newPrice = readDouble();
 
                     if (newPrice < 0) {
@@ -236,14 +258,14 @@ public class Products {
 
             }
 
-            System.out.print("Update Stock? (Y/N): ");
+            System.out.print("Update the stock level? (y) Yes, (n) No ");
             answer = sc.nextLine();
 
-            if (answer.equalsIgnoreCase("Y")) {
+            if (answer.equalsIgnoreCase("y")) {
 
                 int newStock;
                 do {
-                    System.out.print("Enter New Stock: ");
+                    System.out.print("Enter the new stock level >> ");
                     newStock = readInt();
 
                     if (newStock < 0) {
@@ -255,36 +277,40 @@ public class Products {
 
             }
 
-            System.out.println("Product Updated Successfully!");
+            System.out.println("Product details has been updated successfully!!!");
 
         } else {
-            System.out.println("Product not found.");
+            System.out.println("The product cannot be located. Invalid Product");
         }
+
+        System.out.print("Enter (1) to launch menu or any other key to exit: ");
 
     }
 
     public void DeleteProduct() {
 
-        System.out.print("Enter Product Code to Delete: ");
+        System.out.print("Please enter the product code to delete: ");
         String search = sc.nextLine();
 
         ReportData found = findProduct(search);
 
         if (found != null) {
 
-            System.out.print("Are you sure? (Y/N): ");
+            System.out.print("Are you sure you want to delete this product? (y) Yes, (n) No ");
             String answer = sc.nextLine();
 
-            if (answer.equalsIgnoreCase("Y")) {
+            if (answer.equalsIgnoreCase("y")) {
 
                 products.remove(found);
-                System.out.println("Product Deleted Successfully!");
+                System.out.println("Product deleted successfully!!!");
 
             }
 
         } else {
-            System.out.println("Product not found.");
+            System.out.println("The product cannot be located. Invalid Product");
         }
+
+        System.out.print("Enter (1) to launch menu or any other key to exit: ");
 
     }
 
@@ -292,29 +318,45 @@ public class Products {
 
         double total = 0;
 
-        System.out.println("\n========== PRODUCT REPORT ==========");
+        System.out.println("PRODUCT REPORT");
+        System.out.println("====================================================================");
+
+        int i = 1;
 
         for (ReportData r : products) {
 
-            System.out.println("--------------------------------");
-            printProduct(r);
+            System.out.println("PRODUCT " + i);
+            System.out.println("--------------------------------------------------------------------------");
+            System.out.println("PRODUCT CODE >>\t\t" + r.getProductCode());
+            System.out.println("PRODUCT NAME >>\t\t" + r.getProductName());
+            System.out.println("PRODUCT CATEGORY >>\t" + r.getCategory());
+            System.out.println("PRODUCT WARRANTY >>\t" + r.getWarranty());
+            System.out.printf("PRODUCT PRICE >>\t%.1f%n", r.getPrice());
+            System.out.println("PRODUCT LEVEL >>\t" + r.getStock());
+            System.out.println("PRODUCT SUPPLIER >>\t" + r.getSupplier());
+            System.out.println("--------------------------------------------------------------------------");
 
             total += r.getPrice();
+            i++;
 
         }
 
-        System.out.println("--------------------------------");
-        System.out.println("Total Products : " + products.size());
-        System.out.printf("Total Value    : R%.2f%n", total);
+        System.out.println("====================================================================");
+        System.out.println("TOTAL PRODUCT COUNT: " + products.size());
+        System.out.printf("TOTAL PRODUCT VALUE: R %.1f%n", total);
 
         if (!products.isEmpty()) {
-            System.out.printf("Average Value  : R%.2f%n", total / products.size());
+            System.out.printf("AVERAGE PRODUCT VALUE: R %.0f%n", total / products.size());
         }
+
+        System.out.println("====================================================================");
+        System.out.print("Enter (1) to launch menu or any other key to exit: ");
+
     }
 
     public void ExitApplication() {
 
-        System.out.println("Thank you for using Electro Hub.");
+        System.out.println("Thank you for using Bright Future Technologies Application.");
 
     }
 
@@ -327,16 +369,6 @@ public class Products {
         }
 
         return null;
-    }
-
-    private void printProduct(ReportData r) {
-        System.out.println("Code      : " + r.getProductCode());
-        System.out.println("Name      : " + r.getProductName());
-        System.out.println("Category  : " + r.getCategory());
-        System.out.println("Warranty  : " + r.getWarranty());
-        System.out.printf("Price     : R%.2f%n", r.getPrice());
-        System.out.println("Stock     : " + r.getStock());
-        System.out.println("Supplier  : " + r.getSupplier());
     }
 
     private int readInt() {
@@ -360,5 +392,3 @@ public class Products {
     }
 
 }
-    
-
