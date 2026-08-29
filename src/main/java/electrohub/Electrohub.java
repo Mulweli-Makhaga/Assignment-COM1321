@@ -1,0 +1,20 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package electrohub;
+
+/**
+ *
+ * @author Makhaga Mulweli
+ * 26034761
+ */
+
+public class Electrohub {
+
+    public static void main(String[] args) {
+        Products product = new Products();
+        product.DisplayMenu();
+    }
+
+}
